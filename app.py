@@ -422,37 +422,29 @@ if st.session_state.pdf_loaded and st.session_state.rag_pipeline:
 
 
 else:
-    # Welcome message
-    st.markdown('<div class="info-card" style="font-size: 16px;">', unsafe_allow_html=True)
-    st.markdown("## 👋 Welcome to AI Study Assistant!")
-    st.markdown("""Your personal AI tutor for course PDFs. Get instant, detailed explanations from any document.
-    """)
-    st.markdown('</div>', unsafe_allow_html=True)
+    # Welcome message using native Streamlit components (auto dark mode)
+    st.info("### 👋 Welcome to AI Study Assistant!\nYour personal AI tutor for course PDFs. Get instant, detailed explanations from any document.")
     
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown('<div class="steps-guide">', unsafe_allow_html=True)
         st.markdown("### 🚀 Quick Start")
         st.markdown("""
-        <div class="step"><b>1️⃣ Upload PDF</b><br>Use the sidebar to select your course material</div>
-        <div class="step"><b>2️⃣ Process Document</b><br>Click "Process PDF" to index the content</div>
-        <div class="step"><b>3️⃣ Ask Questions</b><br>Type any question about your course</div>
-        <div class="step"><b>4️⃣ Get Answers</b><br>Instant, detailed explanations with sources</div>
-        """, unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+1️⃣ **Upload PDF** - Use the sidebar to select your course material
+2️⃣ **Process Document** - Click "Process PDF" to index the content
+3️⃣ **Ask Questions** - Type any question about your course
+4️⃣ **Get Answers** - Instant, detailed explanations with sources
+        """)
     
     with col2:
-        st.markdown('<div class="steps-guide">', unsafe_allow_html=True)
         st.markdown("### ⭐ Key Features")
         st.markdown("""
-        - 📚 **Unlimited Questions** - Ask anything about your PDF
-        - 🧠 **Source Citation** - See exactly which part answered your question
-        - 🎓 **Smart Explanations** - Tutor-style responses made easy to understand
-        - ⚡ **Powered by Groq** - Fast, free AI (14.4k daily requests)
-        - 🔍 **PDF Preview** - Navigate pages side-by-side while asking
-        """, unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
+- 📚 **Unlimited Questions** - Ask anything about your PDF
+- 🧠 **Source Citation** - See exactly which part answered your question
+- 🎓 **Smart Explanations** - Tutor-style responses made easy to understand
+- ⚡ **Powered by Groq** - Fast, free AI (14.4k daily requests)
+- 🔍 **PDF Preview** - Navigate pages side-by-side while asking
+        """)
 
 # Footer
 st.markdown("---")
