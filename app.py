@@ -34,6 +34,31 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Custom styling with light sky blue theme
+st.markdown("""
+    <style>
+    /* Main header with sky blue gradient */
+    [data-testid="stAppViewContainer"] {
+        background: linear-gradient(135deg, #E0F6FF 0%, #F0F8FF 100%);
+    }
+    
+    /* Highlight accents */
+    h1, h2, h3 {
+        color: #0099CC !important;
+    }
+    
+    /* Button and accent color theme */
+    [data-testid="stButton"] > button {
+        background-color: #4DA6FF !important;
+        border-color: #0099CC !important;
+    }
+    
+    [data-testid="stButton"] > button:hover {
+        background-color: #0099CC !important;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Initialize session state
 if "pdf_processor" not in st.session_state:
     st.session_state.pdf_processor = PDFProcessor()
