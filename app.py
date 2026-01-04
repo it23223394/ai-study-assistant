@@ -34,31 +34,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom styling with light sky blue theme
-st.markdown("""
-    <style>
-    /* Main header with sky blue gradient */
-    [data-testid="stAppViewContainer"] {
-        background: linear-gradient(135deg, #E0F6FF 0%, #F0F8FF 100%);
-    }
-    
-    /* Highlight accents */
-    h1, h2, h3 {
-        color: #0099CC !important;
-    }
-    
-    /* Button and accent color theme */
-    [data-testid="stButton"] > button {
-        background-color: #4DA6FF !important;
-        border-color: #0099CC !important;
-    }
-    
-    [data-testid="stButton"] > button:hover {
-        background-color: #0099CC !important;
-    }
-    </style>
-""", unsafe_allow_html=True)
-
 # Initialize session state
 if "pdf_processor" not in st.session_state:
     st.session_state.pdf_processor = PDFProcessor()
@@ -222,45 +197,37 @@ if st.session_state.pdf_loaded and st.session_state.rag_pipeline:
         st.subheader("📄 PDF Document")
         
         if st.session_state.pdf_images:
-            # Page navigation
             total_pages = len(st.session_state.pdf_images)
             
-            col_nav1, col_nav2, col_nav3 = st.columns([0.8, 1.4, 0.8], gap="small")
+            # Page navigation controls
+            nav_col1, nav_col2, nav_col3 = st.columns([1, 2, 1])
             
-            with col_nav1:
-                if st.button("⬅️ Prev", use_container_width=True, help="Previous page"):
+            with nav_col1:
+                if st.button("⬅️ Previous"):
                     st.session_state.current_page = max(0, st.session_state.current_page - 1)
-                    st.rerun()
             
-            with col_nav2:
-                col_a, col_b = st.columns([1, 1])
-                with col_a:
-                    page_num = st.number_input(
-                        "Page:",
-                        min_value=1,
-                        max_value=total_pages,
-                        value=st.session_state.current_page + 1,
-                        label_visibility="collapsed"
-                    )
-                    if page_num != st.session_state.current_page + 1:
-                        st.session_state.current_page = page_num - 1
-                        st.rerun()
-                with col_b:
-                    st.metric("Page", f"{st.session_state.current_page + 1}/{total_pages}")
+            with nav_col2:
+                selected_page = st.slider(
+                    "Page",
+                    min_value=1,
+                    max_value=total_pages,
+                    value=st.session_state.current_page + 1,
+                    label_visibility="collapsed"
+                )
+                st.session_state.current_page = selected_page - 1
             
-            with col_nav3:
-                if st.button("Next ➡️", use_container_width=True, help="Next page"):
+            with nav_col3:
+                if st.button("Next ➡️"):
                     st.session_state.current_page = min(total_pages - 1, st.session_state.current_page + 1)
-                    st.rerun()
             
-            # Display current page
-            image_data = st.session_state.pdf_images[st.session_state.current_page]
-            img = Image.open(BytesIO(image_data))
-            st.image(
-                img,
-                use_column_width=True,
-                caption=f"Page {st.session_state.current_page + 1} of {total_pages}"
-            )
+            # Display page number
+            st.write(f"**Page {st.session_state.current_page + 1} of {total_pages}**")
+            
+            # Display the PDF image
+            if st.session_state.current_page < len(st.session_state.pdf_images):
+                image_data = st.session_state.pdf_images[st.session_state.current_page]
+                img = Image.open(BytesIO(image_data))
+                st.image(img, use_column_width=True)
         else:
             st.info("📄 PDF preview will appear here after upload")
 
