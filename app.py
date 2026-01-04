@@ -34,6 +34,42 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Mobile responsive CSS
+st.markdown("""
+    <style>
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+        [data-testid="stHorizontalBlock"] {
+            flex-direction: column !important;
+        }
+        
+        [data-testid="column"] {
+            width: 100% !important;
+            flex: 1 1 100% !important;
+            min-width: 100% !important;
+        }
+        
+        .stTextArea textarea {
+            font-size: 16px !important;
+        }
+        
+        h1 {
+            font-size: 1.8rem !important;
+        }
+        
+        h2 {
+            font-size: 1.4rem !important;
+        }
+    }
+    
+    /* Better image scaling */
+    img {
+        max-width: 100%;
+        height: auto;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Initialize session state
 if "pdf_processor" not in st.session_state:
     st.session_state.pdf_processor = PDFProcessor()
@@ -55,6 +91,12 @@ if "pdf_images" not in st.session_state:
 
 if "current_page" not in st.session_state:
     st.session_state.current_page = 0
+
+if "last_answer" not in st.session_state:
+    st.session_state.last_answer = None
+
+if "last_retrieved" not in st.session_state:
+    st.session_state.last_retrieved = None
 
 # Load system prompt
 @st.cache_resource
@@ -142,12 +184,13 @@ with st.sidebar:
 if st.session_state.pdf_loaded and st.session_state.rag_pipeline:
     st.markdown("---")
     
-    # Create two-column layout
+    # Responsive layout: use container for mobile
+    # Create two-column layout for desktop, single column for mobile
     col_left, col_right = st.columns([1, 1], gap="medium")
     
     # LEFT COLUMN: Question and Answer
     with col_left:
-        st.markdown('<div class="section-header">❓ Ask Your Question</div>', unsafe_allow_html=True)
+        st.subheader("❓ Ask Your Question")
         question = st.text_area(
             "Your question:",
             placeholder="e.g., 'What is the main concept of Chapter 2?'",
@@ -173,17 +216,9 @@ if st.session_state.pdf_loaded and st.session_state.rag_pipeline:
                         top_k=retrieval_slider
                     )
                     
-                    # Display answer
-                    st.markdown("---")
-                    st.subheader("✨ Answer")
-                    st.write(answer)
-                    
-                    # Display retrieved chunks
-                    with st.expander(f"📖 Source Material ({len(retrieved)} sections referenced)", expanded=False):
-                        for i, (chunk, score) in enumerate(retrieved, 1):
-                            st.markdown(f"**Section {i}** · Relevance: {score:.0%}")
-                            st.info(chunk[:400] + "..." if len(chunk) > 400 else chunk)
-                            st.divider()
+                    # Store answer in session state
+                    st.session_state.last_answer = answer
+                    st.session_state.last_retrieved = retrieved
                     
                 except Exception as e:
                     st.error(f"❌ Error generating answer: {str(e)}")
@@ -191,6 +226,20 @@ if st.session_state.pdf_loaded and st.session_state.rag_pipeline:
         
         elif submit_button and not question:
             st.warning("⚠️ Please enter a question first!")
+        
+        # Display stored answer if exists
+        if st.session_state.last_answer:
+            st.markdown("---")
+            st.subheader("✨ Answer")
+            st.write(st.session_state.last_answer)
+            
+            # Display retrieved chunks
+            if st.session_state.last_retrieved:
+                with st.expander(f"📖 Source Material ({len(st.session_state.last_retrieved)} sections referenced)", expanded=False):
+                    for i, (chunk, score) in enumerate(st.session_state.last_retrieved, 1):
+                        st.markdown(f"**Section {i}** · Relevance: {score:.0%}")
+                        st.info(chunk[:400] + "..." if len(chunk) > 400 else chunk)
+                        st.divider()
     
     # RIGHT COLUMN: PDF Viewer
     with col_right:
@@ -199,29 +248,19 @@ if st.session_state.pdf_loaded and st.session_state.rag_pipeline:
         if st.session_state.pdf_images:
             total_pages = len(st.session_state.pdf_images)
             
-            # Page navigation controls
-            nav_col1, nav_col2, nav_col3 = st.columns([1, 2, 1])
+            # Page navigation with slider (works better than buttons)
+            st.session_state.current_page = st.slider(
+                "Navigate pages:",
+                min_value=0,
+                max_value=total_pages - 1,
+                value=st.session_state.current_page,
+                format="Page %d",
+                label_visibility="collapsed",
+                key="page_slider"
+            )
             
-            with nav_col1:
-                if st.button("⬅️ Previous"):
-                    st.session_state.current_page = max(0, st.session_state.current_page - 1)
-            
-            with nav_col2:
-                selected_page = st.slider(
-                    "Page",
-                    min_value=1,
-                    max_value=total_pages,
-                    value=st.session_state.current_page + 1,
-                    label_visibility="collapsed"
-                )
-                st.session_state.current_page = selected_page - 1
-            
-            with nav_col3:
-                if st.button("Next ➡️"):
-                    st.session_state.current_page = min(total_pages - 1, st.session_state.current_page + 1)
-            
-            # Display page number
-            st.write(f"**Page {st.session_state.current_page + 1} of {total_pages}**")
+            # Display page info
+            st.caption(f"Page {st.session_state.current_page + 1} of {total_pages}")
             
             # Display the PDF image
             if st.session_state.current_page < len(st.session_state.pdf_images):
