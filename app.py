@@ -61,13 +61,23 @@ st.markdown("""
         font-weight: 600;
     }
     
-    /* Card styling */
+    /* Card styling - light mode */
     .info-card {
         background-color: #f0f4ff;
         border-left: 4px solid #667eea;
         padding: 15px;
         border-radius: 6px;
         margin: 10px 0;
+        color: #1a1a1a;
+    }
+    
+    /* Dark mode card */
+    @media (prefers-color-scheme: dark) {
+        .info-card {
+            background-color: #2d2d44;
+            border-left: 4px solid #667eea;
+            color: #e0e0e0;
+        }
     }
     
     /* Step-by-step guide */
@@ -78,12 +88,28 @@ st.markdown("""
         border: 1px solid #e0e0e0;
     }
     
+    @media (prefers-color-scheme: dark) {
+        .steps-guide {
+            background-color: #1e1e2e;
+            border: 1px solid #3d3d5c;
+        }
+    }
+    
     .step {
         margin: 12px 0;
         padding: 10px;
         background: white;
         border-radius: 4px;
         border-left: 3px solid #667eea;
+        color: #1a1a1a;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        .step {
+            background: #262637;
+            color: #e0e0e0;
+            border-left: 3px solid #667eea;
+        }
     }
     
     /* Footer styling */
@@ -94,6 +120,13 @@ st.markdown("""
         padding: 20px 0;
         border-top: 1px solid #e0e0e0;
         margin-top: 30px;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        .footer {
+            color: #999;
+            border-top: 1px solid #3d3d5c;
+        }
     }
     
     /* Button styling improvements */
@@ -109,6 +142,13 @@ st.markdown("""
         padding: 15px;
     }
     
+    @media (prefers-color-scheme: dark) {
+        .question-area {
+            background-color: #1e1e2e;
+            border: 1px solid #3d3d5c;
+        }
+    }
+    
     /* Answer area */
     .answer-area {
         background-color: #fffaf0;
@@ -116,6 +156,15 @@ st.markdown("""
         padding: 15px;
         border-radius: 4px;
         margin-top: 15px;
+        color: #1a1a1a;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        .answer-area {
+            background-color: #2d2620;
+            border-left: 4px solid #ff9800;
+            color: #e0e0e0;
+        }
     }
     
     /* PDF viewer area */
@@ -124,6 +173,13 @@ st.markdown("""
         border-radius: 8px;
         padding: 10px;
         background-color: #f9f9f9;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+        .pdf-viewer {
+            border: 2px solid #667eea;
+            background-color: #1e1e2e;
+        }
     }
     </style>
 """, unsafe_allow_html=True)
