@@ -63,52 +63,75 @@ st.markdown("""
     
     /* Card styling - light mode */
     .info-card {
-        background-color: #f0f4ff;
+        background-color: #f0f4ff !important;
         border-left: 4px solid #667eea;
         padding: 15px;
         border-radius: 6px;
         margin: 10px 0;
-        color: #1a1a1a;
+        color: #1a1a1a !important;
+    }
+    
+    .info-card * {
+        color: #1a1a1a !important;
     }
     
     /* Dark mode card */
     @media (prefers-color-scheme: dark) {
         .info-card {
-            background-color: #2d2d44;
+            background-color: #2d2d44 !important;
             border-left: 4px solid #667eea;
-            color: #e0e0e0;
+            color: #e0e0e0 !important;
+        }
+        .info-card * {
+            color: #e0e0e0 !important;
         }
     }
     
     /* Step-by-step guide */
     .steps-guide {
-        background-color: #f9f9f9;
+        background-color: #f9f9f9 !important;
         padding: 20px;
         border-radius: 8px;
         border: 1px solid #e0e0e0;
+        color: #1a1a1a !important;
+    }
+    
+    .steps-guide * {
+        color: #1a1a1a !important;
     }
     
     @media (prefers-color-scheme: dark) {
         .steps-guide {
-            background-color: #1e1e2e;
+            background-color: #1e1e2e !important;
             border: 1px solid #3d3d5c;
+            color: #e0e0e0 !important;
+        }
+        .steps-guide * {
+            color: #e0e0e0 !important;
         }
     }
     
     .step {
         margin: 12px 0;
         padding: 10px;
-        background: white;
+        background: white !important;
         border-radius: 4px;
         border-left: 3px solid #667eea;
-        color: #1a1a1a;
+        color: #1a1a1a !important;
+    }
+    
+    .step * {
+        color: #1a1a1a !important;
     }
     
     @media (prefers-color-scheme: dark) {
         .step {
-            background: #262637;
-            color: #e0e0e0;
+            background: #262637 !important;
+            color: #e0e0e0 !important;
             border-left: 3px solid #667eea;
+        }
+        .step * {
+            color: #e0e0e0 !important;
         }
     }
     
@@ -151,19 +174,26 @@ st.markdown("""
     
     /* Answer area */
     .answer-area {
-        background-color: #fffaf0;
+        background-color: #fffaf0 !important;
         border-left: 4px solid #ff9800;
         padding: 15px;
         border-radius: 4px;
         margin-top: 15px;
-        color: #1a1a1a;
+        color: #1a1a1a !important;
+    }
+    
+    .answer-area * {
+        color: #1a1a1a !important;
     }
     
     @media (prefers-color-scheme: dark) {
         .answer-area {
-            background-color: #2d2620;
+            background-color: #2d2620 !important;
             border-left: 4px solid #ff9800;
-            color: #e0e0e0;
+            color: #e0e0e0 !important;
+        }
+        .answer-area * {
+            color: #e0e0e0 !important;
         }
     }
     
