@@ -214,20 +214,6 @@ Carefully crafted instructions to LLM for optimal behavior:
 
 ---
 
-## 🎯 CV/Portfolio Description
-
-**One-liner for resume:**
-> *Built an AI-powered study assistant that allows students to upload course PDFs and ask natural-language questions, using prompt engineering and Retrieval-Augmented Generation to deliver accurate, detailed explanations without hallucinations.*
-
-**Talking points for interviews:**
-- ✅ Implemented RAG pipeline to prevent LLM hallucinations
-- ✅ Designed prompt engineering strategy for educational context
-- ✅ Integrated OpenAI embeddings for semantic search
-- ✅ Built end-to-end AI workflow: upload → process → retrieve → generate
-- ✅ Created user-friendly Streamlit interface
-- ✅ Handled real-world challenges: PDF parsing, chunking strategy, embedding costs
-
----
 
 ## ⚙️ Configuration
 
